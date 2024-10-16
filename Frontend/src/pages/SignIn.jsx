@@ -1152,12 +1152,12 @@ function SignIn() {
         {/* Adjusted py-2 for smaller height */}
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo or brand name */}
-          <div className="text-xl font-bold text-blue-600">
+          <div className="text-xl font-bold text-blue-600 ml-5">
             Court Booking App
           </div>{" "}
           {/* Adjusted text size */}
           {/* Navbar buttons */}
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 mr-5">
             <Link
               to="/"
               className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors"

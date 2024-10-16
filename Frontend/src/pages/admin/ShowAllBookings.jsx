@@ -105,7 +105,7 @@ function ShowAllBookings() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center w-screen"
+      className="min-h-screen flex flex-col items-center w-screen bg-white"
       style={{
         backgroundImage: "url('https://example.com/background-image.jpg')", // Add background image if needed
         backgroundSize: "cover",
@@ -113,16 +113,24 @@ function ShowAllBookings() {
         fontFamily: "'Poppins', sans-serif", // Consistent font style with SignIn
       }}
     >
+      {/* Embedded custom CSS for <option> elements */}
+      <style>{`
+        select option {
+          color: black; /* Text color for the options */
+          background-color: white; /* Optional: changes the background to white */
+        }
+      `}</style>
+
       {/* Navigation Bar */}
-      <nav className="w-full py-4 bg-white shadow-md fixed top-0 left-0 z-50 mb-10">
+      <nav className="w-full py-2 bg-white shadow-md fixed top-0 left-0 z-50">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-xl font-bold text-blue-600">
+          <div className="text-xl font-bold text-blue-600 ml-5">
             Court Booking Admin
           </div>
           <div className="space-x-4">
             <Link
               to="/admin/addNewCourt"
-              className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors"
+              className="mr-5 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors"
             >
               Add New Court
             </Link>
@@ -131,15 +139,15 @@ function ShowAllBookings() {
       </nav>
 
       {/* Content Area */}
-      <div className="pt-12 w-screen bg-white p-8 rounded-lg shadow-lg border border-gray-300 mt-10">
+      <div className="pt-16 w-full bg-white p-8 rounded-lg shadow-lg border border-gray-300 mt-10">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-900">
           Admin Bookings
         </h2>
 
         {/* Filters Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 w-full">
           {/* City Dropdown */}
-          <div>
+          <div className="w-full">
             <label className="block mb-2 font-medium text-gray-700">
               City:
             </label>
@@ -158,7 +166,7 @@ function ShowAllBookings() {
           </div>
 
           {/* Court Dropdown */}
-          <div>
+          <div className="w-full">
             <label className="block mb-2 font-medium text-gray-700">
               Court:
             </label>
@@ -178,7 +186,7 @@ function ShowAllBookings() {
           </div>
 
           {/* Date Input */}
-          <div>
+          <div className="w-full">
             <label className="block mb-2 font-medium text-gray-700">
               Date:
             </label>
@@ -191,18 +199,32 @@ function ShowAllBookings() {
             />
           </div>
 
-          {/* Time Input */}
-          <div>
+          {/* Time Input (with predefined 1-hour intervals) */}
+          <div className="w-full">
             <label className="block mb-2 font-medium text-gray-700">
               Time:
             </label>
-            <input
-              type="time"
+            <select
               name="time"
               value={filters.time}
               onChange={handleFilterChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-600 text-white"
-            />
+            >
+              <option value="">Select Time Slot</option>
+              <option value="08:00">08:00 AM - 09:00 AM</option>
+              <option value="09:00">09:00 AM - 10:00 AM</option>
+              <option value="10:00">10:00 AM - 11:00 AM</option>
+              <option value="11:00">11:00 AM - 12:00 PM</option>
+              <option value="12:00">12:00 PM - 01:00 PM</option>
+              <option value="13:00">01:00 PM - 02:00 PM</option>
+              <option value="14:00">02:00 PM - 03:00 PM</option>
+              <option value="15:00">03:00 PM - 04:00 PM</option>
+              <option value="16:00">04:00 PM - 05:00 PM</option>
+              <option value="17:00">05:00 PM - 06:00 PM</option>
+              <option value="18:00">06:00 PM - 07:00 PM</option>
+              <option value="19:00">07:00 PM - 08:00 PM</option>
+              <option value="20:00">08:00 PM - 09:00 PM</option>
+            </select>
           </div>
         </div>
 
