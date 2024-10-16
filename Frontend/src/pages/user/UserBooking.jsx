@@ -1,5 +1,5 @@
 import { Autocomplete } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AutocompleteSelect from "../AutoCompleteSelect";
 
@@ -11,6 +11,9 @@ function UserBooking() {
     sport: "",
     date: "",
   });
+  const [completeData,setCompleteData] = useState([]);
+  const [centre, setCentre] = useState([]);
+  const [sport, setSport] = useState([]);
   const [courts, setCourts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -69,6 +72,40 @@ function UserBooking() {
       },
     });
   };
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch("/api/bookings/", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setCompleteData(data);
+          setLoading(false);
+        } else {
+          setError(data.message || "Failed to fetch bookings.");
+          setLoading(false);
+        }
+      } catch (err) {
+        setError("An error occurred while fetching the bookings.");
+        setLoading(false);
+      }
+    };
+
+    fetchBookings();
+
+    completeData.map((data) => {
+      setcentre([...centre, data["centre"]]);
+      setSport([...sport,data['sport']]);
+    })
+  },[])
 
   const cities = [
     "New York",
