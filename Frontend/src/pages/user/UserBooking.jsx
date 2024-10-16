@@ -7,12 +7,12 @@ function UserBooking() {
   const [formData, setFormData] = useState({
     startTime: "",
     endTime: "",
-    city: "",
+    centre: "",
     sport: "",
     date: "",
   });
   const [completeData,setCompleteData] = useState([]);
-  const [centre, setCentre] = useState([]);
+  const [centres, setCentres] = useState([]);
   const [sport, setSport] = useState([]);
   const [courts, setCourts] = useState([]);
   const [error, setError] = useState(null);
@@ -27,7 +27,56 @@ function UserBooking() {
       [name]: value,
     });
   };
+   const fetchdata = async ()=>{
+    try{
+      const response = await fetch(apiurl + '/api/centres/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if(!response.ok){
 
+      }
+      else{
+        setCenters(data);
+      }
+    }
+    catch(error){
+      console.log("error fectching centers")
+    }
+  }
+  useEffect(()=>{
+    fetchdata();
+  },[]);
+  const fectchSportData = async ()=>{
+    try{
+      const response = await fetch(apiurl + /api/centres/${formData.centre}/sports, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+      if(!response.ok){
+
+      }
+      else{
+        setSport(data);
+      }
+    }
+    catch(error){
+      console.log("error fectching Sports")
+    }
+  }
+  useEffect(()=>{
+    fectchSportData();
+  },[formData.centre])
   // Handle form submission (Search for courts)
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,10 +85,11 @@ function UserBooking() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/user/getCourtForBooking", {
+      const response = await fetch(`${apiurl}/api/user/getCourtForBooking`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
         body: JSON.stringify(formData),
       });
@@ -60,17 +110,28 @@ function UserBooking() {
   };
 
   // Handle Create Booking (Navigate to CreateABooking page with court details)
-  const handleCreateBooking = (court) => {
-    navigate("/createBooking", {
-      state: {
-        courtId: court["court Id"],
-        courtName: court["court name"],
-        courtPrice: court["court price"],
-        startTime: formData.startTime,
-        endTime: formData.endTime,
-        date: formData.date,
-      },
-    });
+const handleCreateBooking =async  (court) => {
+    try{
+      const form1 = formData;
+      form1.courtId = court['_id'];
+      form1.price = court['price'];
+      const response = await fetch(apiurl + '/api/bookings/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+      const filteredCourts = courts.filter(court1 => court1._id !== court._id);
+      setCourts(filteredCourts);
+      alert("Your Booking Successful go to My Bookings to check it");
+    }
+    catch(error){
+      console.log("Error in Creating Booking");
+    }
   };
 
   useEffect(() => {
@@ -107,55 +168,24 @@ function UserBooking() {
     })
   },[])
 
-  const cities = [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "Houston",
-    "Phoenix",
-    "Philadelphia",
-    "San Antonio",
-    "San Diego",
-    "Dallas",
-    "San Jose",
-  ];
-  const sports = [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "Houston",
-    "Phoenix",
-    "Philadelphia",
-    "San Antonio",
-    "San Diego",
-    "Dallas",
-    "San Jose",
-  ];
-  const timing = [
-    "New York",
-    "Los Angeles",
-    "Chicago",
-    "Houston",
-    "Phoenix",
-    "Philadelphia",
-    "San Antonio",
-    "San Diego",
-    "Dallas",
-    "San Jose",
-  ];
+   const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
 
+  const sports = ['Badminton', 'Tennis', 'Squash', 'Basketball', 'Volleyball', 'Soccer', 'Cricket', 'Table Tennis', 'Swimming', 'Hockey'];
+  
+  const timing = [
+    '0:00-1:00', '1:00-2:00', '2:00-3:00', '3:00-4:00', '4:00-5:00', 
+    '5:00-6:00', '6:00-7:00', '7:00-8:00', '8:00-9:00', '9:00-10:00', 
+    '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', 
+    '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', 
+    '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-24:00'
+  ];
   return (
     <div className="min-h-screen bg-white p-8 w-screen">
       {/* Navigation Bar */}
       <nav className="w-full bg-blue-600 text-white py-4">
         <div className="container mx-auto flex justify-between items-center px-6">
           <div className="space-x-4 text-lg font-bold">
-            <Link
-              to="/user/createabooking"
-              className="hover:underline text-white"
-            >
-              Create Booking
-            </Link>
+           
             <Link to="/user/mybookings" className="hover:underline text-white">
               My Bookings
             </Link>

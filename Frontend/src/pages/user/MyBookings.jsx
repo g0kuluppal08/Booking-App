@@ -9,12 +9,13 @@ function MyBookings() {
   // Fetch bookings from the API
   useEffect(() => {
     const fetchBookings = async () => {
+      const apiurl = import.meta.env.VITE_API_BASE_URL;
       try {
-        const response = await fetch("/api/user/mybookings", {
+        const response = await fetch(`${apiurl}/api/user/mybookings`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+           "Authorization": `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
@@ -74,22 +75,22 @@ function MyBookings() {
                 {booking["court_name"]}
               </h3>
               <p>
-                <strong>City:</strong> {booking.city}
+                <strong>Booking ID:</strong> {booking["_id"]}
+              </p>
+              <p>
+                <strong>City:</strong> {booking.centre}
               </p>
               <p>
                 <strong>Sport:</strong> {booking.sport}
               </p>
               <p>
-                <strong>Date:</strong> {booking.bd}
+                <strong>Date:</strong> {booking.date}
               </p>
               <p>
-                <strong>Time:</strong> {booking.bt}
+                <strong>Time:</strong> {booking.startTime+ "-"+booking.endTime}
               </p>
               <p>
                 <strong>Price:</strong> ${booking.price}
-              </p>
-              <p>
-                <strong>Booking ID:</strong> {booking["booking Id"]}
               </p>
             </div>
           ))

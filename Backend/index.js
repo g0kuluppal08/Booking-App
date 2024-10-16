@@ -6,13 +6,22 @@ const authRoutes = require('./routes/authRoutes');
 const bookingRoutes = require('./routes/bookingRoute');
 const courtsRoutes = require('./routes/courtRoutes');
 const centreRoutes = require('./routes/centreRoutes');
-
+const cors=require('cors');
 dotenv.config();
 const app = express();
 connectDB();
 
+
 // Middleware to parse incoming request bodies
 app.use(bodyParser.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin/bookings',bookingRoutes);
