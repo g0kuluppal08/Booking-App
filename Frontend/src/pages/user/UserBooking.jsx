@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AutocompleteSelect from "../AutoCompleteSelect";
 
 function UserBooking() {
+  const apiurl = import.meta.env.VITE_API_BASE_URL;
   const [formData, setFormData] = useState({
     startTime: "",
     endTime: "",
@@ -42,7 +43,7 @@ function UserBooking() {
 
       }
       else{
-        setCenters(data);
+        setCentres(data);
       }
     }
     catch(error){
@@ -54,7 +55,7 @@ function UserBooking() {
   },[]);
   const fectchSportData = async ()=>{
     try{
-      const response = await fetch(apiurl + /api/centres/${formData.centre}/sports, {
+      const response = await fetch(apiurl + `/api/centres/${formData.centre}/sports`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -63,6 +64,7 @@ function UserBooking() {
       });
       const data = await response.json();
       console.log(data);
+      // return ;
       if(!response.ok){
 
       }
@@ -85,7 +87,7 @@ function UserBooking() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${apiurl}/api/user/getCourtForBooking`, {
+      const response = await fetch(`${apiurl}/api/courts/showcourt`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,39 +136,39 @@ const handleCreateBooking =async  (court) => {
     }
   };
 
-  useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await fetch("/api/bookings/", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+  // useEffect(() => {
+  //   const fetchBookings = async () => {
+  //     try {
+  //       const response = await fetch("/api/bookings/", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       });
 
-        const data = await response.json();
+  //       const data = await response.json();
 
-        if (response.ok) {
-          setCompleteData(data);
-          setLoading(false);
-        } else {
-          setError(data.message || "Failed to fetch bookings.");
-          setLoading(false);
-        }
-      } catch (err) {
-        setError("An error occurred while fetching the bookings.");
-        setLoading(false);
-      }
-    };
+  //       if (response.ok) {
+  //         setCompleteData(data);
+  //         setLoading(false);
+  //       } else {
+  //         setError(data.message || "Failed to fetch bookings.");
+  //         setLoading(false);
+  //       }
+  //     } catch (err) {
+  //       setError("An error occurred while fetching the bookings.");
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchBookings();
+  //   fetchBookings();
 
-    completeData.map((data) => {
-      setcentre([...centre, data["centre"]]);
-      setSport([...sport,data['sport']]);
-    })
-  },[])
+  //   completeData.map((data) => {
+  //     setcentre([...centre, data["centre"]]);
+  //     setSport([...sport,data['sport']]);
+  //   })
+  // },[])
 
    const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
 
@@ -185,7 +187,6 @@ const handleCreateBooking =async  (court) => {
       <nav className="w-full bg-blue-600 text-white py-4">
         <div className="container mx-auto flex justify-between items-center px-6">
           <div className="space-x-4 text-lg font-bold">
-           
             <Link to="/user/mybookings" className="hover:underline text-white">
               My Bookings
             </Link>
@@ -199,29 +200,33 @@ const handleCreateBooking =async  (court) => {
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-8 m-20">
         {/* City */}
         <div>
-          <AutocompleteSelect options={cities} field={"City"} />
+          <AutocompleteSelect
+            options={centres}
+            field={"centre"}
+            setFormData={setFormData}
+            formData={formData}
+          />
         </div>
 
         {/* Sport */}
         <div>
-          <AutocompleteSelect options={sports} field={"Sport"} />
+          <AutocompleteSelect options={sport} field={"sport"} setFormData={setFormData} formData={formData}/>
         </div>
 
         {/*Time */}
         <div>
-          <AutocompleteSelect options={timing} field={"time Slot"} />
+          <AutocompleteSelect options={timing} field={"time Slot"} setFormData={setFormData} formData={formData} />
         </div>
 
         {/* Date */}
         <div>
-          <label className="block text-gray-700">Date:</label>
+          <label className="block mb-2 font-medium text-gray-700">Date:</label>
           <input
             type="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
-            required
-            className="w-full px-4 py-2 border rounded-lg bg-white text-black"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-600 text-white"
           />
         </div>
 
@@ -245,12 +250,12 @@ const handleCreateBooking =async  (court) => {
         ) : (
           courts.map((court) => (
             <div
-              key={court["court Id"]}
-              className="bg-white shadow-md rounded-lg p-4"
+              key={court["_id"]}
+              className="bg-black shadow-md rounded-lg p-4"
             >
-              <h3 className="text-xl font-bold mb-2">{court["court name"]}</h3>
+              <h3 className="text-xl font-bold mb-2">{court["name"]}</h3>
               <p>
-                <strong>Price:</strong> ${court["court price"]}
+                <strong>Price:</strong> ${court["price"]}
               </p>
               <button
                 onClick={() => handleCreateBooking(court)}

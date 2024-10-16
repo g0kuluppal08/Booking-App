@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 
-const AutocompleteSelect = ({options,field}) => {
+const AutocompleteSelect = ({options,field,setFormData,formData}) => {
   // Sample list of cities
 //   const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
 

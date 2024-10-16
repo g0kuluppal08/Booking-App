@@ -11,7 +11,7 @@ function MyBookings() {
     const fetchBookings = async () => {
       const apiurl = import.meta.env.VITE_API_BASE_URL;
       try {
-        const response = await fetch(`${apiurl}/api/user/mybookings`, {
+        const response = await fetch(`${apiurl}/api/bookings/mybookings`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -69,10 +69,10 @@ function MyBookings() {
           bookings.map((booking) => (
             <div
               key={booking["booking Id"]}
-              className="bg-white shadow-md rounded-lg p-4"
+              className="bg-orange-500 rounded-lg p-4"
             >
               <h3 className="text-xl font-bold mb-2">
-                {booking["court_name"]}
+                {booking["court"]}
               </h3>
               <p>
                 <strong>Booking ID:</strong> {booking["_id"]}
