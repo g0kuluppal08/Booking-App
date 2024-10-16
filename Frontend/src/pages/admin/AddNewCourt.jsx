@@ -1,47 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select"; // Import react-select
+import AutocompleteSelect from "../AutoCompleteSelect";
 
 function AddNewCourt() {
+  const apiurl = import.meta.env.VITE_API_BASE_URL;
   const [formData, setFormData] = useState({
-    city: "",
+    centre: "",
     sport: "",
-    court_name: "",
+    name: "",
     price: "",
   });
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-  const [courtData, setCourtData] = useState([]);
-  const [sportData, setSportData] = useState([]);
+  const [centers, setCentres] = useState([]);
+  const [sport, setSport] = useState([]);
 
-  // List of cities
-  const cityOptions = [
-    { value: "Delhi", label: "Delhi" },
-    { value: "Mumbai", label: "Mumbai" },
-    { value: "Bengaluru", label: "Bengaluru" },
-    { value: "Hyderabad", label: "Hyderabad" },
-  ];
 
-  // Custom styles for react-select
-  const customStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      color: state.isSelected ? "white" : "black", // text color
-      backgroundColor: state.isSelected ? "blue" : "white", // background color for selected and non-selected options
-      "&:hover": {
-        backgroundColor: "lightgray", // background color on hover
-      },
-    }),
-    control: (provided) => ({
-      ...provided,
-      borderColor: "gray", // border color
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: "black", // text color for the selected value
-    }),
-  };
 
   // Handle input changes
   const handleChange = (e) => {
@@ -52,54 +28,54 @@ function AddNewCourt() {
     });
   };
 
-  // Handle city change from React Select
-  const handleCityChange = (selectedOption) => {
-    setFormData({
-      ...formData,
-      city: selectedOption ? selectedOption.value : "",
-    });
-  };
-
-  // Handle sport change from React Select
-  const handleSportChange = (selectedOption) => {
-    setFormData({
-      ...formData,
-      sport: selectedOption ? selectedOption.value : "",
-    });
-  };
-
-  // Fetch sport data based on city
-  useEffect(() => {
-    const fetchSportData = async () => {
-      if (formData.city) {
-        try {
-          const response = await fetch(`/api/admin/getsport/${formData.city}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          });
-          if (response.ok) {
-            const data = await response.json();
-            const sportsOptions = data.sports.map((sport) => ({
-              value: sport,
-              label: sport,
-            }));
-            setSportData(sportsOptions);
-          } else {
-            console.error("Failed to fetch sports.");
-          }
-        } catch (err) {
-          console.error("Error fetching sports:", err);
-        }
-      }
-    };
-
-    fetchSportData();
-  }, [formData.city]);
-
-  // Handle form submission
+     const fetchdata = async () => {
+       try {
+         const response = await fetch(apiurl + "/api/centres/all", {
+           method: "GET",
+           headers: {
+             "Content-Type": "application/json",
+             Authorization: `Bearer ${localStorage.getItem("token")}`,
+           },
+         });
+         const data = await response.json();
+         console.log(data);
+         if (!response.ok) {
+         } else {
+           setCentres(data);
+         }
+       } catch (error) {
+         console.log("error fectching centers");
+       }
+     };
+     useEffect(() => {
+       fetchdata();
+     }, []);
+     const fectchSportData = async () => {
+       try {
+         const response = await fetch(
+           apiurl + `/api/centres/${formData.centre}/sports`,
+           {
+             method: "GET",
+             headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${localStorage.getItem("token")}`,
+             },
+           }
+         );
+         const data = await response.json();
+         console.log(data);
+         // return ;
+         if (!response.ok) {
+         } else {
+           setSport(data);
+         }
+       } catch (error) {
+         console.log("error fectching Sports");
+       }
+     };
+     useEffect(() => {
+       fectchSportData();
+     }, [formData.centre]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -107,7 +83,7 @@ function AddNewCourt() {
 
     try {
       setLoading(true);
-      const response = await fetch("/api/admin/createCourt", {
+      const response = await fetch(apiurl + "/api/admin/courts/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -117,15 +93,8 @@ function AddNewCourt() {
       });
 
       const data = await response.json();
-
       if (response.ok) {
         setSuccess("Court Created Successfully");
-        setFormData({
-          city: "",
-          sport: "",
-          court_name: "",
-          price: "",
-        });
       } else {
         setError(
           data.message ||
@@ -177,32 +146,12 @@ function AddNewCourt() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* City Dropdown (with custom styles) */}
             <div>
-              <label className="block text-gray-700">City:</label>
-              <Select
-                options={cityOptions}
-                onChange={handleCityChange}
-                value={cityOptions.find(
-                  (option) => option.value === formData.city
-                )}
-                placeholder="Select Center"
-                isClearable
-                styles={customStyles} // Applying custom styles here
-              />
+              <AutocompleteSelect options={centers} field={"centre"} formData={formData} setFormData={setFormData}/>
             </div>
 
             {/* Sport Dropdown (Populated based on city selection with search and toggle) */}
             <div>
-              <label className="block text-gray-700">Sport:</label>
-              <Select
-                options={sportData}
-                onChange={handleSportChange}
-                value={sportData.find(
-                  (option) => option.value === formData.sport
-                )}
-                placeholder="Select Sport"
-                isClearable
-                styles={customStyles} // Applying custom styles here
-              />
+              <AutocompleteSelect options={sport} field={"sport"} formData={formData} setFormData={setFormData}/>
             </div>
 
             {/* Court Name */}
@@ -210,8 +159,8 @@ function AddNewCourt() {
               <label className="block text-gray-700">Court Name:</label>
               <input
                 type="text"
-                name="court_name"
-                value={formData.court_name}
+                name="name"
+                value={formData.name}
                 onChange={handleChange}
                 required
                 placeholder="Enter court name"

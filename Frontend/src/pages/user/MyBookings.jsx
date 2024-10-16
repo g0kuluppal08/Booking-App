@@ -20,6 +20,11 @@ function MyBookings() {
         });
 
         const data = await response.json();
+        if (data.message == "No bookings found for this user") {
+          setBookings([]);
+          setLoading(false);
+          return;
+        }
 
         if (response.ok) {
           setBookings(data);

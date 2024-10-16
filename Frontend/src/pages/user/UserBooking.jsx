@@ -135,45 +135,6 @@ const handleCreateBooking =async  (court) => {
       console.log("Error in Creating Booking");
     }
   };
-
-  // useEffect(() => {
-  //   const fetchBookings = async () => {
-  //     try {
-  //       const response = await fetch("/api/bookings/", {
-  //         method: "GET",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       });
-
-  //       const data = await response.json();
-
-  //       if (response.ok) {
-  //         setCompleteData(data);
-  //         setLoading(false);
-  //       } else {
-  //         setError(data.message || "Failed to fetch bookings.");
-  //         setLoading(false);
-  //       }
-  //     } catch (err) {
-  //       setError("An error occurred while fetching the bookings.");
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchBookings();
-
-  //   completeData.map((data) => {
-  //     setcentre([...centre, data["centre"]]);
-  //     setSport([...sport,data['sport']]);
-  //   })
-  // },[])
-
-   const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose'];
-
-  const sports = ['Badminton', 'Tennis', 'Squash', 'Basketball', 'Volleyball', 'Soccer', 'Cricket', 'Table Tennis', 'Swimming', 'Hockey'];
-  
   const timing = [
     '0:00-1:00', '1:00-2:00', '2:00-3:00', '3:00-4:00', '4:00-5:00', 
     '5:00-6:00', '6:00-7:00', '7:00-8:00', '8:00-9:00', '9:00-10:00', 
