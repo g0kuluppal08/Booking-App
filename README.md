@@ -1,6 +1,7 @@
 
 # ROll NO IIT2021124(GOKUL UPPAL)
-##Deploy:
+#Deploy:
+
 -**Frontend**:https://frontend1-jf90.onrender.com/
 
 -**Backend**:https://backend1-aiuj.onrender.com
@@ -22,9 +23,7 @@
 - **Responsive Design**: Optimized for use across different devices, providing a smooth experience for both users and administrators.
 
 - **Functionality for Users**:
-Users can search for available courts based on centres, sport, date, and time slots, and book available courts.
-Users can only select centers that are available in the database.
-After selecting a center, users will only see sports that are offered at that specific center.
+Users can search for available courts based on centres, sport, date, and time slots, and book available courts.Users can only select centers that are available in the database.After selecting a center, users will only see sports that are offered at that specific center.
 
 ## Technologies Used
 
@@ -83,20 +82,25 @@ After selecting a center, users will only see sports that are offered at that sp
 - **Create Booking**: `/user/userbookings`
   Here user can made there bookings based on the availablity of court in a specific centre for a specific sport at a Time.
 
--- **My Bookings**:`/user/mybookings`
+- **My Bookings**:`/user/mybookings`
   user can view all the bookings made by him on this route
 
 ### Admin Routes
   **Login** `/signin`
   Authentication Admin and generate JWT token and admin role that we use to navigate into admin page
+  
   **Show Bookings** `/admin/showallbookings`
   Admin can view all bookings made by all users and also have the access to delete them.
+  
   **Add Court** `/admin/addNewCourt`
   Here Admin can add court for a particular centre and for a sport that is played in that centre also he can set price and court name.
 
   ### Credential
+  
   **Admin** 
+  
   Email:Gokul@gmail.com
+  
   Password:123456
 
 ## Contributing
