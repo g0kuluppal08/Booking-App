@@ -1,5 +1,9 @@
 
 # ROll NO IIT2021124(GOKUL UPPAL)
+##Deploy:
+-**Frontend**:https://frontend1-jf90.onrender.com/
+-**Backend**:https://backend1-aiuj.onrender.com
+
 # SportsBookingApp
 
 **SportsBookingApp** is a MERN stack project designed to facilitate booking management for a sports technology company. The application allows users to search for available courts, make bookings, and manage existing bookings, while administrators can manage courts and oversee bookings across multiple centers.
