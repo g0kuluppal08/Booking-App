@@ -1,6 +1,6 @@
 
 # ROll NO IIT2021124(GOKUL UPPAL)
-#Deploy:
+#Deploy(Hosted Links):
 
 -**Frontend**:https://frontend1-jf90.onrender.com/
 
@@ -86,22 +86,22 @@ Users can search for available courts based on centres, sport, date, and time sl
   user can view all the bookings made by him on this route
 
 ### Admin Routes
-  **Login** `/signin`
+  - **Login** `/signin`
   Authentication Admin and generate JWT token and admin role that we use to navigate into admin page
   
-  **Show Bookings** `/admin/showallbookings`
+  - **Show Bookings** `/admin/showallbookings`
   Admin can view all bookings made by all users and also have the access to delete them.
   
-  **Add Court** `/admin/addNewCourt`
+  - **Add Court** `/admin/addNewCourt`
   Here Admin can add court for a particular centre and for a sport that is played in that centre also he can set price and court name.
 
   ### Credential
   
   **Admin** 
   
-  Email:Gokul@gmail.com
+  **Email**:Gokul@gmail.com
   
-  Password:123456
+  **Password**:123456
 
 ## Contributing
 
